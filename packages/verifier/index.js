@@ -15,6 +15,8 @@ const authSecrets = {
   });
 
   await octokit.request(`POST ${process.env.CB_URL}`, {
+    owner: process.env.OWNER,
+    repo: process.env.REPO,
     state: 'approved',
     headers: {
       'X-GitHub-Api-Version': '2022-11-28'
