@@ -1,0 +1,45 @@
+on:
+  workflow_dispatch:
+    inputs:
+      owner:
+        description: The owner of the repo to check
+        type: string
+        required: true
+      repo:
+        description: The repo to check
+        type: string
+        required: true
+      ref:
+        description: The ref to check
+        type: string
+        required: true
+      runId:
+        description: The Id of the workflow run to check
+        type: string
+        required: true
+jobs:
+    verify-deployment:
+      runs-on: ubuntu-latest
+      environment: Verifier
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/checkout@v3
+          with:
+            repository: ${{ inputs.owner }}/${{ inputs.repo }} 
+            ref: ${{ inputs.ref }}
+            path: verifiee
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 18
+        - run: npm i
+        - run: npm -w=verifier start
+          env:
+            RELEASER_APP_ID: ${{ secrets.RELEASER_APP_ID }}
+            RELEASER_PRIVATE_KEY: ${{ secrets.RELEASER_PRIVATE_KEY }}
+            RELEASER_CLIENT_ID: ${{ secrets.RELEASER_CLIENT_ID }}
+            RELEASER_CLIENT_SECRET: ${{ secrets.RELEASER_CLIENT_SECRET }}
+            RELEASER_INSTALLATION_ID: ${{ secrets.RELEASER_INSTALLATION_ID }}
+            OWNER: ${{ inputs.owner }}
+            REPO: ${{ inputs.repo }}
+            RUN_ID: ${{ inputs.runId }}
+    

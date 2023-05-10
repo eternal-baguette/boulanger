@@ -1,0 +1,25 @@
+{
+  "name": "redirecter",
+  "private": true,
+  "type": "module",
+  "description": "description",
+  "authors": "author",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@octokit/auth-app": "4.0.10",
+    "fastify": "^4.17.0",
+    "octokit": "2.0.14"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.7",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
