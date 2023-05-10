@@ -14,10 +14,7 @@ const authSecrets = {
     auth: authSecrets,
   });
 
-  await octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/deployment_protection_rule', {
-    owner: process.OWNER,
-    repo: process.REPO,
-    run_id: process.RUN_ID,
+  await octokit.request(`POST ${CB_URL}`, {
     state: 'approved',
     headers: {
       'X-GitHub-Api-Version': '2022-11-28'

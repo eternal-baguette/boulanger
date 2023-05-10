@@ -13,7 +13,7 @@ on:
         description: The ref to check
         type: string
         required: true
-      runId:
+      deploymentCbUrl:
         description: The Id of the workflow run to check
         type: string
         required: true
@@ -41,5 +41,5 @@ jobs:
             RELEASER_INSTALLATION_ID: ${{ secrets.RELEASER_INSTALLATION_ID }}
             OWNER: ${{ inputs.owner }}
             REPO: ${{ inputs.repo }}
-            RUN_ID: ${{ inputs.runId }}
+            CB_URL: ${{ inputs.deploymentCbUrl }}
     
