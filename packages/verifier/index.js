@@ -14,7 +14,7 @@ const authSecrets = {
     auth: authSecrets,
   });
 
-  await octokit.request(`POST ${process.env.CB_URL}`, {
+  await octokit.request(`POST ${new URL(process.env.CB_URL).pathname}`, {
     owner: process.env.OWNER,
     repo: process.env.REPO,
     state: 'approved',
