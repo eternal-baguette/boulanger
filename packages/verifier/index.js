@@ -16,10 +16,8 @@ const authSecrets = {
   console.log(process.env.DEPLOYED_ENV)
   console.log(process.env.CB_URL)
   await octokit.request(`POST ${new URL(process.env.CB_URL).pathname}`, {
-    owner: process.env.OWNER,
-    repo: process.env.REPO,
-    environment_name: process.DEPLOYED_ENV,
     state: 'approved',
+    "environment_name": process.DEPLOYED_ENV,
     headers: {
       'X-GitHub-Api-Version': '2022-11-28'
     }
