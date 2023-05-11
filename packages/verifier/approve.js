@@ -13,8 +13,6 @@ const authSecrets = {
     authStrategy: createAppAuth,
     auth: authSecrets,
   });
-  console.log(process.env.DEPLOYED_ENV)
-  console.log(process.env.CB_URL)
   await octokit.request(`POST ${new URL(process.env.CB_URL).pathname}`, {
     state: 'approved',
     "environment_name": process.env.DEPLOYED_ENV,

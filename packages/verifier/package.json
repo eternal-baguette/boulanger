@@ -7,7 +7,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "approve": "node approve.js",
+    "verify": "node verify.js",
     "build": "tsc"
   },
   "dependencies": {
