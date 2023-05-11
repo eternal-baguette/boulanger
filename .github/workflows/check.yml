@@ -22,29 +22,36 @@ on:
         type: string
         required: true
 jobs:
-    verify-deployment:
-      runs-on: ubuntu-latest
-      environment: Verifier
-      steps:
-        - uses: actions/checkout@v3
-        - uses: actions/checkout@v3
-          with:
-            repository: ${{ inputs.owner }}/${{ inputs.repo }} 
-            ref: ${{ inputs.ref }}
-            path: verifiee
-        - uses: actions/setup-node@v3
-          with:
-            node-version: 18
-        - run: npm i
-        - run: npm -w=verifier start
-          env:
-            RELEASER_APP_ID: ${{ secrets.RELEASER_APP_ID }}
-            RELEASER_PRIVATE_KEY: ${{ secrets.RELEASER_PRIVATE_KEY }}
-            RELEASER_CLIENT_ID: ${{ secrets.RELEASER_CLIENT_ID }}
-            RELEASER_CLIENT_SECRET: ${{ secrets.RELEASER_CLIENT_SECRET }}
-            RELEASER_INSTALLATION_ID: ${{ secrets.RELEASER_INSTALLATION_ID }}
-            OWNER: ${{ inputs.owner }}
-            REPO: ${{ inputs.repo }}
-            CB_URL: ${{ inputs.deploymentCbUrl }}
-            DEPLOYED_ENV: ${{ inputs.deployedEnv }}
-    
+  verify-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.owner }}/${{ inputs.repo }} 
+          ref: ${{ inputs.ref }}
+          path: verifiee
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm i
+      - run: npm -w=verifier run verify
+  manual-approval:
+    runs-on: ubuntu-latest
+    environment: Manual Approval
+    needs: [verify-deployment]
+    if: $ {{needs.verify-deployment.result != 'success' }}
+    steps:
+      - run: exit 0
+  send-approval:
+    runs-on: ubuntu-latest
+    environment: Approver
+    needs: [verify-deployment, manual-approval]
+    if: $ {{ needs.verify-deployment.result == 'success' || needs.manual-approval.result == 'success' }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm i
+      - run: npm -w=verifier run approve
