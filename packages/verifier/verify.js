@@ -1,7 +1,7 @@
 import { readdirSync } from "node:fs";
-import { resolve } from "node:path";
+import { join } from "node:path";
 
-const verifieeContents = readdirSync(resolve("verifiee"), {
+const verifieeContents = readdirSync(join(process.env.GITHUB_WORKSPACE, "verifiee"), {
   withFileTypes: true,
 });
 
