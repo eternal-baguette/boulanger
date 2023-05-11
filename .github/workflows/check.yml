@@ -40,14 +40,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: Manual Approval
     needs: [verify-deployment]
-    if: ${{needs.verify-deployment.result != 'success' }}
+    if: ${{ failure() && needs.verify-deployment.result != 'success' }}
     steps:
       - run: exit 0
   send-approval:
     runs-on: ubuntu-latest
     environment: Verifier
     needs: [verify-deployment, manual-approval]
-    if: ${{ needs.verify-deployment.result == 'success' || needs.manual-approval.result == 'success' }}
+    if: ${{ always() && (needs.verify-deployment.result == 'success' || needs.manual-approval.result == 'success') }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
