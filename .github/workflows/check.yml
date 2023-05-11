@@ -45,7 +45,7 @@ jobs:
       - run: exit 0
   send-approval:
     runs-on: ubuntu-latest
-    environment: Approver
+    environment: Verifier
     needs: [verify-deployment, manual-approval]
     if: $ {{ needs.verify-deployment.result == 'success' || needs.manual-approval.result == 'success' }}
     steps:
